@@ -1,0 +1,58 @@
+INSERT INTO PEOPLE VALUES (
+	0,
+	'Donna');
+
+
+INSERT INTO PEOPLE VALUES (
+	1,
+	'John');
+
+
+INSERT INTO PEOPLE VALUES (
+	2,
+	'Sandra');
+
+
+INSERT INTO PEOPLE VALUES (
+	3,
+	'Robert');
+
+
+INSERT INTO PEOPLE VALUES (
+	4,
+	'Maria');
+
+
+INSERT INTO PEOPLE VALUES (
+	5,
+	'Helen');
+
+
+INSERT INTO PEOPLE VALUES (
+	6,
+	'Brad');
+
+
+INSERT INTO PEOPLE VALUES (
+	7,
+	'James');
+
+
+INSERT INTO PEOPLE VALUES (
+	8,
+	'Pete');
+
+
+INSERT INTO PEOPLE VALUES (
+	9,
+	'Michael');
+
+
+INSERT INTO PEOPLE VALUES (
+	10,
+	'Tim');
+
+
+INSERT INTO PEOPLE VALUES (
+	11,
+	'Jennifer');
