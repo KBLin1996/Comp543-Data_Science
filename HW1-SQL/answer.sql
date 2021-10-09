@@ -111,9 +111,46 @@ GROUP BY p.person
 --              get {(September, .12), (October, .74), (November, .14)}. The fractions
 --              should add up to one across all months.
 CREATE VIEW MON_AVG AS
-SELECT MONTH(s.sighted), AVG(*)
+SELECT DATENAME(month, s.sighted) AS MON, COUNT(*) AS MON_CNT
+FROM (SELECT s1.sighted
+    FROM sightings s1
+    WHERE s1.person = 'Jennifer') s
+GROUP BY DATENAME(month, s.sighted)
+
+SELECT ma.MON, CAST(ma.MON_CNT AS FLOAT) / CAST(m.SUM_CNT AS FLOAT)
+FROM MON_AVG ma, (
+    SELECT SUM(ma2.MON_CNT) AS SUM_CNT
+    FROM MON_AVG ma2
+    ) m
+
+-- Question 12: Whose set of flower sightings is most similar to John’s? Set similarity is here defined in terms of
+--              the Jaccard Index, where JI (A, B) for two sets A and B is (size of the intersection of A and B) /
+--              (size of the union of A and B). A larger Jaccard Index means more similar.
+CREATE VIEW JI_INTERSEC AS
+SELECT DISTINCT s.name, s.person
 FROM sightings s
-GROUP BY MONTH(s.sighted)
-HAVING AVG(*)
+LEFT JOIN sightings s2 ON s.name = s2.name AND s2.person = 'John'
+INTERSECT
+SELECT DISTINCT s3.name, s3.person
+FROM sightings s3
+RIGHT JOIN sightings s5 ON s3.name = s5.name AND s3.person = 'John'
 
+CREATE VIEW JI_UNION AS
+SELECT DISTINCT s.name, s.person
+FROM (SELECT DISTINCT s1.name, s1.person
+      FROM sightings s1) s
+LEFT JOIN sightings s2 ON s.name = s2.name AND s.person = 'John'
+UNION
+SELECT DISTINCT s3.name, s3.person
+FROM (SELECT DISTINCT s4.name, s4.person
+      FROM sightings s4) s3
+RIGHT JOIN sightings s5 ON s3.name = s5.name AND s3.person = 'John'
 
+CREATE VIEW RESULT AS
+SELECT ju.person AS ANS, CAST(COUNT(ji.name) AS FLOAT) / CAST(COUNT(ju.name) AS FLOAT) AS JACCARD_INDEX
+FROM JI_INTERSEC ji, JI_UNION ju
+GROUP BY ju.person
+
+SELECT r.ANS, r.JACCARD_INDEX
+FROM RESULT r
+WHERE r.ANS <> 'John'
