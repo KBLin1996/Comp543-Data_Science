@@ -49,7 +49,7 @@ if __name__ == '__main__':
             hq.heappush(maxPriority, -np.linalg.norm(j - i))
             if len(maxPriority) > k:
                 hq.heappop(maxPriority)
-            elif len(maxPriority) == k and len(outliersDict) == m and -hq.nsmallest(1, maxPriority)[0] < minOutlierVal:
+            if len(maxPriority) == k and len(outliersDict) == m and -hq.nsmallest(1, maxPriority)[0] < minOutlierVal:
                 flag = True
                 break
         if flag:
